@@ -160,8 +160,11 @@
   .autres { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 15px; }
   .autres a { font-weight: 700; }
 
-  footer.pied { padding: 26px 0 90px; font-size: 14px; color: var(--doux); }
-  footer.pied .bloc { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+  .ig { width: 20px; height: 20px; flex: none; }
+  .insta { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: var(--encre); text-decoration: none; padding: 8px 14px; border: 1.5px solid var(--trait); border-radius: 99px; }
+  .insta:hover { border-color: var(--acc); color: var(--acc); }
+  footer.pied { padding: 26px 0 32px; font-size: 14px; color: var(--doux); }
+  footer.pied .bloc { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; }
 
   /* ---------- ordinateur ---------- */
   @media (min-width: 900px) {
@@ -285,7 +288,7 @@
         </div>
         <blockquote>« En début de saison, j'étais remplaçant. Avec le programme de Félix, j'ai gagné en explosivité sur mes démarrages et je tiens le rythme jusqu'à la fin du match. Aujourd'hui je suis titulaire et meilleur buteur de l'équipe. »
           <footer>Valentin, ailier gauche en N2</footer></blockquote>
-        <a class="btn secondaire" href="https://www.instagram.com/flx.training/" target="_blank" rel="noopener">Suivre Félix sur Instagram · @flx.training</a>
+        <a class="btn secondaire" href="https://www.instagram.com/flx.training/" target="_blank" rel="noopener"><svg class="ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>Suivre Félix sur Instagram · @flx.training</a>
       </div>
     </div>
   </section>
@@ -324,7 +327,7 @@
   </section>
 </main>
 
-<footer class="pied"><div class="bloc"><span>FLX Training · Préparation physique · Région parisienne</span><a href="https://www.instagram.com/flx.training/" target="_blank" rel="noopener">@flx.training</a></div></footer>
+<footer class="pied"><div class="bloc"><span>FLX Training · Préparation physique · Région parisienne</span><a class="insta" href="https://www.instagram.com/flx.training/" target="_blank" rel="noopener" aria-label="Instagram de Félix : @flx.training"><svg class="ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>@flx.training</a></div></footer>
 
 <script>
 const WHATSAPP = "33783303917";

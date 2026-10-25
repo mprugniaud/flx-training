@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FLX Training — Prépa physique</title>
+<meta name="description" content="Performance et réathlétisation : Félix, préparateur physique, t'entraîne comme un athlète. Programme dans l'app, suivi de ta charge, coaching en salle en région parisienne.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Permanent+Marker&family=Caveat+Brush&display=swap" rel="stylesheet">
+<style>
+  /*
+   * Maquette de la landing FLX Training, deux directions artistiques sur le même texte :
+   *   - « couloirs » : piste d'athlé, ocre + bleu nuit, titres condensés ;
+   *   - « gymnase »  : sol de gymnase (parquet vertical + arcs), titres au marqueur.
+   * Le texte vient du document de wording (25/10/2026). Ce fichier est la SOURCE : la direction est
+   * fixée par <body data-da>, et tools/build_landing.py en tire site/couloirs/ et site/gymnase/.
+   */
+  :root, [data-da="couloirs"] {
+    --fond: #f4efe7; --encre: #17213a; --doux: #5b6275; --carte: #fff; --trait: rgba(23,33,58,.14);
+    --acc: #c4462c; --sur-acc: #fff; --acc2: #17213a; --sur-acc2: #f4efe7; --hl: #c4462c;
+    --titre: 900 1em/0.92 Archivo, sans-serif;
+  }
+  [data-da="gymnase"] {
+    --fond: #ead9bb; --encre: #1d1a16; --doux: #5e5446; --carte: #f6ecd9; --trait: rgba(29,26,22,.18);
+    --acc: #d0402c; --sur-acc: #fff; --acc2: #2b59c3; --sur-acc2: #fff; --hl: #e8b923;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--fond); color: var(--encre); font: 400 16px/1.55 Archivo, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  .bloc { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+  section { padding: 56px 0; }
+
+  /* ---------- typo des titres, selon la direction ---------- */
+  .t { margin: 0; letter-spacing: -.01em; }
+  [data-da="couloirs"] .t { font-family: Archivo; font-weight: 900; font-stretch: 62%; text-transform: uppercase; line-height: .92; }
+  [data-da="gymnase"] .t { font-family: "Permanent Marker", cursive; font-weight: 400; line-height: 1.05; }
+  [data-da="gymnase"] h1.t { transform: rotate(-2deg); transform-origin: left; }
+  h1.t { font-size: clamp(44px, 9vw, 84px); }
+  h2.t { font-size: clamp(28px, 6vw, 52px); overflow-wrap: break-word; margin-bottom: 8px; }
+  [data-da="couloirs"] h1.t, [data-da="couloirs"] h2.t { color: var(--acc); }
+  .surligne { background: linear-gradient(transparent 60%, var(--hl) 60% 88%, transparent 88%); }
+  [data-da="couloirs"] .surligne { background: none; }
+  .sous { color: var(--doux); max-width: 560px; margin: 0 0 24px; font-size: 17px; }
+  .kicker { font-size: 12.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 12px; color: var(--acc2); }
+  .main { font-family: "Caveat Brush", cursive; color: var(--acc); }
+  [data-da="couloirs"] .main { display: none; }
+  .seulement-gymnase { display: none; } [data-da="gymnase"] .seulement-gymnase { display: block; }
+  .seulement-couloirs { display: none; } [data-da="couloirs"] .seulement-couloirs { display: block; }
+
+  /* ---------- boutons ---------- */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 15px 22px; border-radius: 12px; border: 0;
+    background: var(--acc); color: var(--sur-acc); font: 800 16px Archivo, sans-serif; text-decoration: none; cursor: pointer; }
+  .btn.secondaire { background: transparent; color: var(--encre); padding-left: 4px; padding-right: 4px; text-decoration: underline; text-underline-offset: 4px; }
+  .btn.plein { width: 100%; }
+  [data-da="gymnase"] .btn { border-radius: 6px; }
+  .wa { width: 20px; height: 20px; flex: none; }
+
+  /* ---------- en-tête ---------- */
+  header { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--fond) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--trait); }
+  header .bloc { display: flex; align-items: center; justify-content: space-between; height: 62px; }
+  .logo { text-decoration: none; display: flex; align-items: baseline; gap: 6px; }
+  [data-da="couloirs"] .logo b { font: 900 30px Archivo; font-stretch: 62%; color: var(--acc); }
+  [data-da="couloirs"] .logo span { font: 800 11px Archivo; letter-spacing: .3em; background: var(--acc2); color: var(--sur-acc2); padding: 2px 6px; transform: translateY(-4px); }
+  [data-da="gymnase"] .logo { transform: rotate(-3deg); }
+  [data-da="gymnase"] .logo b { font: 400 26px "Permanent Marker"; }
+  [data-da="gymnase"] .logo span { font: 400 15px "Permanent Marker"; color: var(--acc); }
+  nav { display: flex; gap: 22px; align-items: center; font-weight: 600; font-size: 15px; }
+  nav a { text-decoration: none; }
+  nav .lien { display: none; }
+  nav .btn { padding: 9px 14px; font-size: 14px; }
+
+  /* ---------- héros ---------- */
+  .hero { padding-top: 28px; }
+  .hero .bloc { display: grid; gap: 28px; }
+  .visuel { position: relative; overflow: hidden; border-radius: 16px; aspect-ratio: 316 / 214; }
+  [data-da="gymnase"] .visuel { border-radius: 8px; }
+  .visuel svg { display: block; width: 100%; height: 100%; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; }
+
+  /* ---------- formules ---------- */
+  .formules { display: grid; gap: 18px; margin-top: 28px; }
+  .offre { position: relative; background: var(--carte); border: 1px solid var(--trait); border-radius: 16px; padding: 24px 22px; display: flex; flex-direction: column; }
+  [data-da="gymnase"] .offre { border: 2px solid var(--acc2); border-radius: 8px; }
+  [data-da="gymnase"] .offre:nth-child(3) { border-style: dashed; border-color: var(--hl); }
+  .offre.top { background: var(--acc); color: var(--sur-acc); border: 0; }
+  .offre.top .doux, .offre.top .pourqui { color: inherit; opacity: .85; }
+  .offre .ruban { position: absolute; top: -12px; left: 22px; font: 800 11px Archivo; letter-spacing: .1em; text-transform: uppercase; padding: 4px 10px; border-radius: 99px; background: var(--acc2); color: var(--sur-acc2); }
+  [data-da="gymnase"] .offre .ruban { background: var(--hl); color: var(--encre); }
+  .offre .num { position: absolute; right: 18px; top: 4px; font: 900 64px Archivo; font-stretch: 62%; opacity: .12; }
+  [data-da="gymnase"] .offre .num { display: none; }
+  .offre .note { position: absolute; right: 14px; top: -16px; padding: 0 6px; background: var(--fond); font: 22px/1.2 "Caveat Brush"; color: var(--acc); transform: rotate(-4deg); }
+  [data-da="couloirs"] .offre .note { display: none; }
+  .offre h3 { font-size: 30px; margin-bottom: 4px; }
+  .offre .pourqui { font-size: 14px; color: var(--doux); margin: 0 0 14px; min-height: 2.9em; }
+  .offre .phrase { font-weight: 700; margin: 0 0 14px; }
+  .prix { font: 900 46px/1 Archivo; letter-spacing: -.02em; margin-bottom: 4px; }
+  [data-da="couloirs"] .prix { font-stretch: 62%; font-size: 56px; }
+  .prix small { font-size: 15px; font-weight: 600; opacity: .7; letter-spacing: 0; font-stretch: 100%; }
+  .offre ul { list-style: none; padding: 0; margin: 14px 0 22px; flex: 1; }
+  .offre li { padding: 5px 0 5px 24px; position: relative; font-size: 15px; }
+  .offre li::before { content: "✓"; position: absolute; left: 0; font-weight: 900; color: var(--acc); }
+  .offre.top li::before { color: var(--sur-acc); }
+  .offre .btn { width: 100%; }
+  .offre.top .btn { background: var(--sur-acc); color: var(--acc); }
+  .mention { font-size: 14px; color: var(--doux); margin-top: 16px; }
+
+  /* ---------- étapes ---------- */
+  .etapes { display: grid; gap: 14px; margin-top: 28px; counter-reset: e; }
+  .etape { display: grid; grid-template-columns: 64px 1fr; gap: 14px; align-items: start; }
+  .etape .n { font: 900 54px/1 Archivo; font-stretch: 62%; color: var(--acc); }
+  [data-da="couloirs"] .etape .n { background: var(--carte); border: 2px solid var(--encre); border-radius: 6px; text-align: center; padding: 6px 0 2px; font-size: 40px; color: var(--encre); }
+  [data-da="gymnase"] .etape .n { font: 400 48px/1 "Permanent Marker"; transform: rotate(-6deg); }
+  .etape h3 { font-size: 30px; }
+  .etape p { margin: 4px 0 0; color: var(--doux); }
+
+  /* ---------- app ---------- */
+  .app .bloc { display: grid; gap: 32px; align-items: center; }
+  .points { display: grid; gap: 16px; margin: 24px 0 8px; }
+  .points b { display: block; font-size: 17px; }
+  .points span { color: var(--doux); }
+  .tel { width: 270px; margin: 0 auto; border-radius: 36px; background: #0d0f14; padding: 12px; box-shadow: 0 30px 60px -30px rgba(0,0,0,.5); }
+  .ecran { border-radius: 26px; background: #151821; color: #eef0f4; padding: 18px 14px; font-size: 12.5px; min-height: 480px; }
+  .ecran .haut { display: flex; justify-content: space-between; opacity: .6; font-size: 11px; margin-bottom: 14px; }
+  .ecran h4 { margin: 0 0 2px; font-size: 18px; }
+  .ecran .petit { opacity: .6; font-size: 11px; margin-bottom: 12px; }
+  .ex { background: #1d212c; border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; }
+  .ex b { display: block; font-size: 13px; }
+  .series { display: flex; gap: 5px; margin-top: 8px; }
+  .series i { flex: 1; height: 26px; border-radius: 7px; background: #2a2f3c; display: grid; place-items: center; font-style: normal; font-size: 11px; }
+  .series i.ok { background: var(--acc); color: #fff; }
+  .chrono { margin-top: 10px; border-radius: 12px; background: var(--acc2); color: var(--sur-acc2); padding: 12px; text-align: center; }
+  .chrono b { display: block; font-size: 30px; font-variant-numeric: tabular-nums; }
+  .rpe { display: flex; gap: 4px; margin-top: 8px; }
+  .rpe i { flex: 1; height: 22px; border-radius: 5px; font-style: normal; font-size: 10px; display: grid; place-items: center; color: #111; }
+
+  /* ---------- Félix ---------- */
+  .felix .bloc { display: grid; gap: 28px; }
+  .photo { aspect-ratio: 4 / 5; border-radius: 16px; display: grid; place-items: center; text-align: center; color: var(--doux); font-weight: 600; font-size: 14px;
+    background: repeating-linear-gradient(135deg, var(--carte) 0 14px, color-mix(in srgb, var(--carte) 70%, var(--fond)) 14px 28px); border: 1px solid var(--trait); }
+  [data-da="gymnase"] .photo { border-radius: 8px; }
+  .chiffres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 26px 0; }
+  .chiffres b { display: block; font: 900 40px/1 Archivo; font-stretch: 62%; color: var(--acc); }
+  [data-da="gymnase"] .chiffres b { font: 400 34px/1.1 "Permanent Marker"; }
+  .chiffres span { font-size: 13.5px; color: var(--doux); }
+  blockquote { margin: 0 0 22px; padding: 20px 22px; background: var(--carte); border-radius: 14px; border-left: 5px solid var(--acc); font-size: 17px; }
+  blockquote footer { margin-top: 10px; font-size: 14px; font-weight: 700; }
+
+  /* ---------- FAQ ---------- */
+  details { border-bottom: 1px solid var(--trait); }
+  summary { cursor: pointer; list-style: none; padding: 18px 36px 18px 0; position: relative; font-weight: 800; font-size: 17px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; position: absolute; right: 4px; top: 12px; font-size: 26px; font-weight: 400; color: var(--acc); }
+  details[open] summary::after { content: "–"; }
+  details p { margin: 0 0 18px; color: var(--doux); max-width: 680px; }
+
+  /* ---------- contact ---------- */
+  .contact { background: var(--acc2); color: var(--sur-acc2); }
+  [data-da="gymnase"] .contact { background: var(--encre); color: var(--fond); }
+  .contact .bloc { display: grid; gap: 28px; }
+  .contact h2.t { color: inherit !important; }
+  .contact .sous { color: inherit; opacity: .8; }
+  form { background: var(--fond); color: var(--encre); border-radius: 16px; padding: 22px; display: grid; gap: 14px; }
+  [data-da="gymnase"] form { border-radius: 8px; }
+  label { display: grid; gap: 6px; font-weight: 700; font-size: 14px; }
+  input, select { font: 400 16px Archivo, sans-serif; padding: 13px 14px; border-radius: 10px; border: 1.5px solid var(--trait); background: var(--carte); color: var(--encre); width: 100%; }
+  input:focus, select:focus { outline: 2px solid var(--acc); outline-offset: 1px; }
+  .apercu { font-size: 13px; color: var(--doux); background: var(--carte); border-radius: 10px; padding: 10px 12px; white-space: pre-wrap; }
+  .autres { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 15px; }
+  .autres a { font-weight: 700; }
+
+  footer.pied { padding: 26px 0 90px; font-size: 14px; color: var(--doux); }
+  footer.pied .bloc { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+
+  /* ---------- ordinateur ---------- */
+  @media (min-width: 900px) {
+    section { padding: 88px 0; }
+    nav .lien { display: inline; }
+    .hero { padding-top: 56px; }
+    .hero .bloc { grid-template-columns: 1.2fr 1fr; align-items: center; gap: 56px; }
+    .formules { grid-template-columns: repeat(3, 1fr); align-items: stretch; }
+    .etapes { grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .etape { grid-template-columns: 1fr; }
+    .app .bloc { grid-template-columns: 1.1fr .9fr; }
+    .felix .bloc { grid-template-columns: .8fr 1.2fr; align-items: center; gap: 56px; }
+    .contact .bloc { grid-template-columns: 1fr 1fr; align-items: center; gap: 56px; }
+    .faq .bloc { display: grid; grid-template-columns: .8fr 1.2fr; gap: 56px; }
+  }
+</style>
+</head>
+<body data-da="couloirs">
+
+<header>
+  <div class="bloc">
+    <a class="logo" href="#"><b>FLX</b><span>Training</span></a>
+    <nav>
+      <a class="lien" href="#formules">Formules</a>
+      <a class="lien" href="#felix">Félix</a>
+      <a class="lien" href="#faq">Questions</a>
+      <a class="btn" href="#contact">Écrire à Félix</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="bloc">
+      <div>
+        <div class="kicker">Performance &amp; Réathlétisation</div>
+        <h1 class="t">Entraîne-toi comme un <span class="surligne">athlète.</span></h1>
+        <p class="sous" style="margin-top:18px">Que tu prépares une saison, reviennes de blessure ou reprennes après une pause, je t'entraîne comme un athlète : ton programme, ton suivi semaine après semaine, ajusté selon ta fatigue.</p>
+        <div class="actions">
+          <a class="btn" href="#formules">Voir les formules</a>
+          <a class="btn secondaire" href="#contact">Écrire à Félix</a>
+        </div>
+      </div>
+      <div class="visuel" id="visuel"></div>
+    </div>
+  </section>
+
+  <section id="formules">
+    <div class="bloc">
+      <h2 class="t">Choisis ton accompagnement</h2>
+      <p class="sous">Sans engagement, tu changes quand tu veux.</p>
+      <div class="formules">
+        <div class="offre">
+          <span class="num">01</span><span class="note">pour démarrer</span>
+          <h3 class="t">Autonome</h3>
+          <p class="pourqui">Tu veux un plan sérieux pour devenir un vrai athlète.</p>
+          <p class="phrase">Un programme solide, facile à suivre et propre à ta pratique sportive.</p>
+          <div class="prix">19 € <small>/ mois</small></div>
+          <ul><li>Ton programme selon ton sport, dans l'app</li><li>La vidéo de chaque exercice</li><li>Le suivi de ta charge et de ta fatigue</li></ul>
+          <a class="btn" href="#contact" data-formule="Autonome">Je lance ma prépa</a>
+        </div>
+        <div class="offre top">
+          <span class="ruban">Le plus choisi</span><span class="num">02</span><span class="note">le + complet ✓</span>
+          <h3 class="t">Sur-mesure</h3>
+          <p class="pourqui">Tu as un objectif précis : une saison, un retour de blessure, une perf.</p>
+          <p class="phrase">Ton programme, construit et ajusté pour toi.</p>
+          <div class="prix">70 € <small>/ mois</small></div>
+          <ul><li>Tout l'Autonome</li><li>Un bilan de départ</li><li>Un programme 100 % personnalisé, ajusté chaque semaine</li><li>Des échanges directs avec Félix</li></ul>
+          <a class="btn" href="#contact" data-formule="Sur-mesure">Je veux mon programme</a>
+        </div>
+        <div class="offre">
+          <span class="num">03</span><span class="note">en salle</span>
+          <h3 class="t">Coaching en salle</h3>
+          <p class="pourqui">Tu veux être coaché sur le terrain, comme un athlète pro.</p>
+          <p class="phrase">Le suivi d'un athlète pro, séance après séance.</p>
+          <div class="prix">dès 180 € <small>/ mois</small></div>
+          <ul><li>Tout le Sur-mesure</li><li>Des séances en salle avec Félix, en région parisienne</li><li>Un vrai boost pour lancer ton suivi</li></ul>
+          <a class="btn" href="#contact" data-formule="Coaching en salle">Je m'entraîne avec Félix</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="bloc">
+      <h2 class="t">Comment ça marche</h2>
+      <div class="etapes">
+        <div class="etape"><span class="n">1</span><div><h3 class="t">Bilan</h3><p>Ton sport (ou pas), ton niveau, tes objectifs, tes blessures passées : Félix part de toi.</p></div></div>
+        <div class="etape"><span class="n">2</span><div><h3 class="t">Entraînement</h3><p>Tes séances de la semaine sont dans l'app, avec la vidéo de chaque exercice. Même sans réseau à la salle.</p></div></div>
+        <div class="etape"><span class="n">3</span><div><h3 class="t">Ajustement</h3><p>Après chaque séance, tu notes ton ressenti. Félix suit ta charge et adapte la suite pour que tu progresses sans te blesser.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="app">
+    <div class="bloc">
+      <div>
+        <h2 class="t">Ton coach dans ta poche</h2>
+        <div class="points">
+          <div><b>Ta séance, pas à pas.</b><span>Séries, charges, temps de récup avec chrono : tu suis, tu coches.</span></div>
+          <div><b>Une vidéo par exercice.</b><span>Pour faire le bon geste, même seul.</span></div>
+          <div><b>Marche sans réseau.</b><span>Les séances et les vidéos sont téléchargées : la salle au sous-sol n'est plus un problème.</span></div>
+          <div><b>Ta fatigue sous contrôle.</b><span>Tu notes chaque séance et chaque match ; l'app calcule ta charge et prévient avant la surcharge.</span></div>
+        </div>
+        <p class="mention">Pas de compte à créer : Félix t'envoie ton lien, tu l'ajoutes à ton écran d'accueil.</p>
+      </div>
+      <div class="tel" aria-hidden="true">
+        <div class="ecran">
+          <div class="haut"><span>FLX Training</span><span>Semaine 3</span></div>
+          <h4>Séance 1 · Force</h4>
+          <div class="petit">5 exercices · 60 min</div>
+          <div class="ex"><b>Squat arrière</b>4 × 6 · 80 kg<div class="series"><i class="ok">✓</i><i class="ok">✓</i><i class="ok">✓</i><i>4</i></div></div>
+          <div class="chrono">Récup<b>1:24</b></div>
+          <div class="ex" style="margin-top:8px"><b>Fente bulgare</b>3 × 8 / jambe · 2 × 14 kg<div class="series"><i>1</i><i>2</i><i>3</i></div></div>
+          <div class="ex"><b>Ressenti de la séance (RPE)</b><div class="rpe">
+            <i style="background:#7fd18b">5</i><i style="background:#b9d86f">6</i><i style="background:#f2d35b;outline:2px solid #fff">7</i><i style="background:#f5a54a">8</i><i style="background:#ee6a4d">9</i></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="felix" id="felix">
+    <div class="bloc">
+      <div class="photo">Photo de Félix<br>en séance</div>
+      <div>
+        <h2 class="t">Qui est Félix ?</h2>
+        <p>Préparateur physique diplômé d'un Master 2 EOPS (entraînement et optimisation de la performance sportive), Félix accompagne des sportifs qui veulent performer, des personnes qui reprennent après une pause et veulent retrouver leur niveau, et celles qui veulent simplement un programme sérieux à suivre. Il intervient aussi en réathlétisation après blessure.</p>
+        <div class="chiffres">
+          <div><b>M2 EOPS</b><span>diplôme de préparation physique</span></div>
+          <div><b>3 ans</b><span>d'accompagnement de sportifs</span></div>
+          <div><b>+10</b><span>athlètes suivis aujourd'hui</span></div>
+        </div>
+        <blockquote>« En début de saison, j'étais remplaçant. Avec le programme de Félix, j'ai gagné en explosivité sur mes démarrages et je tiens le rythme jusqu'à la fin du match. Aujourd'hui je suis titulaire et meilleur buteur de l'équipe. »
+          <footer>Valentin, ailier gauche en N2</footer></blockquote>
+        <a class="btn secondaire" href="https://www.instagram.com/flx.training/" target="_blank" rel="noopener">Suivre Félix sur Instagram · @flx.training</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq" id="faq">
+    <div class="bloc">
+      <h2 class="t">Questions fréquentes</h2>
+      <div>
+        <details><summary>Je n'ai pas fait de sport depuis longtemps, c'est pour moi ?</summary><p>Oui. Ici, tout le monde s'entraîne comme un athlète : bilan, programme construit pour toi, suivi de ta charge. On part simplement de ton niveau d'aujourd'hui.</p></details>
+        <details><summary>Je débute, est-ce que c'est trop dur ?</summary><p>Non. Le programme part de ton niveau, avec la vidéo de chaque exercice. Les charges montent quand tu es prêt.</p></details>
+        <details><summary>Je reviens de blessure.</summary><p>C'est justement un des métiers de Félix : la réathlétisation. On commence par un bilan, et on travaille avec ton kiné si tu en as un.</p></details>
+        <details><summary>De quel matériel j'ai besoin ?</summary><p>Tout dépend d'où tu t'entraînes : salle, terrain ou maison. Félix adapte le programme à ce que tu as.</p></details>
+        <details><summary>Je peux arrêter quand je veux ?</summary><p>Oui, sans engagement.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="bloc">
+      <div>
+        <h2 class="t">Prêt à t'y mettre ?</h2>
+        <p class="sous">Dis-moi ton sport et ton objectif, je te réponds sous 48 h. Le message part sur WhatsApp, déjà écrit : tu n'as plus qu'à l'envoyer.</p>
+        <div class="autres"><a href="https://ig.me/m/flx.training" target="_blank" rel="noopener">Ou écris sur Instagram</a></div>
+      </div>
+      <form id="form">
+        <label>Prénom<input name="prenom" autocomplete="given-name" placeholder="Valentin"></label>
+        <label>Ton sport &amp; ton niveau<input name="sport" placeholder="handball, N2 · ou « aucun pour l'instant »"></label>
+        <label>Ton objectif<select name="objectif"><option>Performance</option><option>Réathlétisation</option><option>Remise en condition</option><option>Autre</option></select></label>
+        <label>Formule<select name="formule"><option>Je ne sais pas encore</option><option>Autonome</option><option>Sur-mesure</option><option>Coaching en salle</option></select></label>
+        <div class="apercu" id="apercu"></div>
+        <button class="btn plein" type="submit">
+          <svg class="wa" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.5 1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>
+          Envoyer à Félix sur WhatsApp</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="pied"><div class="bloc"><span>FLX Training · Préparation physique · Région parisienne</span><a href="https://www.instagram.com/flx.training/" target="_blank" rel="noopener">@flx.training</a></div></footer>
+
+<script>
+const WHATSAPP = "33783303917";
+
+/* Visuel du héros, propre à chaque direction. */
+const VISUELS = {
+  // Piste d'athlé : couloirs blancs sur l'ocre, logo au centre, numéros de couloir en bas.
+  couloirs: () => `<svg viewBox="0 0 316 214" preserveAspectRatio="xMidYMid slice">
+      <rect width="316" height="214" fill="var(--acc)"/>
+      ${Array.from({ length: 7 }, (_, i) => `<rect x="${i * 46 + 18}" y="0" width="3" height="214" fill="#fff" opacity=".9"/>`).join("")}
+      ${Array.from({ length: 6 }, (_, i) => `<text x="${i * 46 + 42}" y="204" text-anchor="middle" font-family="Archivo" font-stretch="62%" font-weight="900" font-size="20" fill="#fff">${i + 1}</text>`).join("")}
+      <rect x="84" y="46" width="148" height="84" fill="var(--acc)"/>
+      <text x="158" y="122" text-anchor="middle" font-family="Archivo" font-stretch="62%" font-weight="900" font-size="96" fill="#fff" style="font-stretch:62%">FLX</text>
+      <rect x="104" y="136" width="108" height="20" fill="var(--acc2)"/>
+      <text x="158" y="151" text-anchor="middle" font-family="Archivo" font-weight="800" font-size="11" letter-spacing="4" fill="#fff">TRAINING</text>
+    </svg>`,
+  // Sol de gymnase : parquet à lattes verticales, arc plein + arc pointillé, logo au marqueur au centre.
+  gymnase: () => `<svg viewBox="0 0 316 214" preserveAspectRatio="xMidYMid slice">
+      <rect width="316" height="214" fill="var(--fond)"/>
+      <g stroke="var(--encre)" stroke-width="1" opacity=".09">${Array.from({ length: 18 }, (_, i) => {
+        const x = i * 18 + 9, j1 = (i * 83) % 214, j2 = (i * 83 + 120) % 214;
+        return `<line x1="${x}" y1="0" x2="${x}" y2="214"/><line x1="${x}" y1="${j1}" x2="${x + 18}" y2="${j1}"/><line x1="${x}" y1="${j2}" x2="${x + 18}" y2="${j2}"/>`;
+      }).join("")}</g>
+      <path d="M8 214 A150 150 0 0 1 308 214" fill="none" stroke="var(--acc2)" stroke-width="5"/>
+      <path d="M-32 214 A190 190 0 0 1 348 214" fill="none" stroke="var(--hl)" stroke-width="4" stroke-dasharray="14 10"/>
+      <g transform="rotate(-4 158 160)">
+        <text x="158" y="158" text-anchor="middle" font-family="Permanent Marker" font-size="64" fill="var(--encre)">FLX</text>
+        <text x="158" y="190" text-anchor="middle" font-family="Permanent Marker" font-size="28" fill="var(--acc)">Training</text>
+      </g>
+    </svg>`
+};
+
+document.getElementById("visuel").innerHTML = VISUELS[document.body.dataset.da]();
+
+/* Formulaire → message WhatsApp prérempli (rien n'est envoyé au site). */
+const form = document.getElementById("form");
+function message() {
+  const v = Object.fromEntries(new FormData(form));
+  const prenom = v.prenom.trim(), sport = v.sport.trim();
+  return `Salut Félix${prenom ? ", c'est " + prenom : ""} ! ` +
+    (sport ? `Mon sport : ${sport}. ` : "") +
+    `Mon objectif : ${v.objectif.toLowerCase()}. ` +
+    (v.formule === "Je ne sais pas encore" ? "Je ne sais pas encore quelle formule choisir. " : `La formule qui m'intéresse : ${v.formule}. `) +
+    "On peut en parler ?";
+}
+const majApercu = () => { document.getElementById("apercu").textContent = "Message : " + message(); };
+form.addEventListener("input", majApercu);
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(message())}`, "_blank", "noopener");
+});
+// Un bouton de formule présélectionne sa formule dans le formulaire.
+document.querySelectorAll("[data-formule]").forEach((a) => a.addEventListener("click", () => { form.formule.value = a.dataset.formule; majApercu(); }));
+majApercu();
+</script>
+</body>
+</html>
